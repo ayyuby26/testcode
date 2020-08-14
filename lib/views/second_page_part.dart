@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:testcode/models/home.dart';
 import '../style.dart';
 import '../constant.dart';
@@ -13,7 +14,8 @@ topWidget(BuildContext context) {
           child: Container(
             height: 36,
             margin: EdgeInsets.only(left: 10, top: 10),
-            child: TextField(decoration: searchDecor()),
+            child: TextField(decoration: searchDecor(),
+            ),
           )),
       topButton(context, TopButtonType.message),
       topButton(context, TopButtonType.notif),
@@ -85,7 +87,9 @@ CarouselSlider slider(List<BannerHome> imgList) {
         ? []
         : imgList
             .map((item) => Container(
-                  padding: EdgeInsets.all(10),
+              height: 184,
+              width: 325,
+                  padding: EdgeInsets.symmetric(vertical: 5.5,horizontal: 5),
                   child: Center(
                     child: Stack(
                       overflow: Overflow.visible,
@@ -101,29 +105,29 @@ CarouselSlider slider(List<BannerHome> imgList) {
                             child: Image.network(
                               item.image,
                               fit: BoxFit.cover,
-                              width: 372,
                               height: 184,
-                              cacheWidth: 372,
                               cacheHeight: 184,
                             ),
                           ),
                         ),
                         Container(
                           margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.only(left: 11,top: 4, bottom: 4),
                           height: 40,
                           width: 121,
                           decoration: BoxDecoration(
                               color: primaryColor,
                               borderRadius: BorderRadius.circular(30)),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Container(
-                                  margin: EdgeInsets.all(13),
                                   child: Text(
                                     "SEE MORE",
                                     style: TextStyle(
                                         color: backColor, fontSize: 12),
                                   )),
+                                  // SizedBox(width: 15),
                               Container(
                                 alignment: Alignment.center,
                                 width: 32,
@@ -141,7 +145,7 @@ CarouselSlider slider(List<BannerHome> imgList) {
                           ),
                         ),
                         Positioned(
-                          right: -80,
+                          right: -65,
                           top: 0,
                           child: Container(
                               constraints: BoxConstraints(maxWidth: 180),
@@ -166,53 +170,51 @@ featured(featuredList) {
       scrollDirection: Axis.horizontal,
       itemBuilder: (_, i) {
         return Container(
+          height: 121,
           width: 101,
-          height: 135,
+          margin: EdgeInsets.all(5.5),
           decoration: BoxDecoration(
-              boxShadow: <BoxShadow>[],
-              borderRadius: BorderRadius.circular(80)),
-          child: Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            shadowColor: Colors.blue.withOpacity(.15),
-            margin: EdgeInsets.symmetric(horizontal: 11),
-            elevation: 10,
-            child: Stack(
-              children: <Widget>[
-                Column(
+              color: primaryColor,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: placeholderColor.withOpacity(.4), blurRadius: 10)
+              ]),
+          child: Stack(
+            children: <Widget>[
+              // pict + icon 360deg
+              Stack(
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(10)),
+                    child: Image.network(
+                      featuredList[i].image,
+                      width: 101,
+                      height: 75,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Container(
+                      margin: EdgeInsets.all(5),
+                      child: Image.asset("assets/icons/360deg.png")),
+                ],
+              ),
+              Positioned(
+                left: 10,
+                bottom: 10,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    ClipRRect(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(10)),
-                      child: Image.network(
-                        featuredList[i].image,
-                        width: 100,
-                        height: 85,
-                        fit: BoxFit.cover,
-                      ),
+                    Text(
+                      featuredList[i].name,
+                      style: TextStyle(fontSize: 12),
                     ),
-                    Container(
-                      margin: EdgeInsets.all(11),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            featuredList[i].name,
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          Text(featuredList[i].price,
-                              style: TextStyle(fontSize: 10)),
-                        ],
-                      ),
-                    )
+                    Text(featuredList[i].price, style: TextStyle(fontSize: 10)),
                   ],
                 ),
-                Container(
-                    margin: EdgeInsets.all(5),
-                    child: Image.asset("assets/icons/360deg.png")),
-              ],
-            ),
+              )
+            ],
           ),
         );
       });

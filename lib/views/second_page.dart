@@ -18,45 +18,49 @@ class _SecondPageState extends State<SecondPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeBloc, HomeState>(
-      listener: (BuildContext context, HomeState state) {
-        if (state is HomeSuccess) {
-          setState(() {
-            imgList.addAll(state.home.banner);
-            featuredList.addAll(state.home.featured);
-          });
-        } else if (state is HomeFail)
-          print("banner gagal load");
-        else
-          print("server masalah");
-      },
-      child: Scaffold(
-        body: SafeArea(
+    print(MediaQuery.of(context).size.width);
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  child: topWidget(context),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.all(5),
-                  child: Image.asset(
-                    "assets/logo/logo.png",
-                  ),
-                ),
-slider(imgList),
-                Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(60),
+            child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+              if (state is HomeSuccess) {
+                print("succes");
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5),
+                      child: topWidget(context),
                     ),
-                    height: 135,
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(bottom: 20),
-                    child: featured(featuredList))
-              ],
-            ),
+                    Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.all(5),
+                      child: Image.asset(
+                        "assets/logo/logo.png",
+                      ),
+                    ),
+                    slider(state.home.banner),
+                    Row(
+                      children: <Widget>[],
+                    ),
+                    Container(
+                        height: 146,
+                        alignment: Alignment.center,
+                        child: featured(state.home.featured)),
+                  ],
+                );
+              } else if (state is HomeFail) {
+                print("banner gagal load");
+                return Container();
+              } else {
+                print("server masalah");
+                return Container();
+              }
+            }),
           ),
         ),
       ),

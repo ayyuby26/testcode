@@ -22,13 +22,16 @@ loginDecor(String type) {
 InputDecoration searchDecor() {
   return InputDecoration(
     hintText: "Search for anything on Shoplink",
-    hintStyle: TextStyle(color: placeholderColor),
-    prefixIcon: Icon(
-      Icons.search,
-      size: 18,
-      color: placeholderColor,
-    ),
-    contentPadding: EdgeInsets.zero,
+    hintStyle: TextStyle(color: placeholderColor.withOpacity(.7),fontSize: 16),
+    prefixIcon: Container(
+      padding: EdgeInsets.only(left:11,right: 7),
+        child: Icon(
+          Icons.search,
+          size: 20,
+          color: backColor.withOpacity(.4),
+        )),
+    prefixIconConstraints: BoxConstraints(minWidth: 20),
+    contentPadding: EdgeInsets.only(right: 15),
     filled: true,
     fillColor: backColor.withOpacity(.1),
     focusedBorder: OutlineInputBorder(
